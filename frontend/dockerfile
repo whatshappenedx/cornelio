@@ -1,0 +1,21 @@
+# Start with the official Node image as a base
+FROM node:14
+
+# Set the working directory
+WORKDIR /
+
+# Copy package.json, package-lock.json, and craco.config.js
+COPY package.json ./
+COPY craco.config.js ./
+
+# Install project dependencies
+RUN npm install
+
+# Copy the rest of the frontend application
+COPY . .
+
+# Expose the port serve runs on
+EXPOSE 3000
+
+CMD ["npm", "start"]
+
