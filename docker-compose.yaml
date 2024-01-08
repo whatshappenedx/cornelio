@@ -1,0 +1,39 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    environment:
+      NODE_ENV: development
+      DATABASE: mongodb+srv://admin:admin1234@cornelio.jxgfb6o.mongodb.net/
+    depends_on:
+      - mongo
+    command: npm run dev # Make sure this matches the command to start your backend server
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+    #REACT_APP_BACKEND_URL: http://backend:8888 # Ensure your frontend uses this environment variable to connect to the backend
+    #command: npm run start
+
+  mongo:
+    image: mongo
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"
+
+volumes:
+  mongodata:
+
+networks:
+  default:
+    driver: bridge
